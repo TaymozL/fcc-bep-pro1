@@ -10,6 +10,9 @@ app.get('/api/whoami',function(req,res){
         language:req.headers['accept-language'].split(',')[0],
         software:sw
     }
+    if(req.headers['x-forwarded-for']){
+        resJSON.ipadress = req.headers['x-forwarded-for'];
+    }
     res.jsonp(resJSON);
 })
 
