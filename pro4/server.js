@@ -2,7 +2,7 @@
 require('dotenv').load();
 var cx=process.env.CX;
 var key = process.env.KEY;
-console.log(key);
+console.log(key+cx);
 var urlPre = 'https://www.googleapis.com/customsearch/v1?q=';
 var bl = require("bl");
 var https = require("https");
@@ -33,15 +33,15 @@ function findQs(cb){
 }
 function reqImageFromGoogle(url,cb){
   https.get(url,(res) => {
-    // console.log('statusCode: ', res.statusCode);
-    // console.log('headers: ', res.headers);
+    console.log('statusCode: ', res.statusCode);
+    console.log('headers: ', res.headers);
     res.pipe(bl(function(er,data){
         if (er) throw er;
         var resJson = JSON.parse(data.toString());
         var res = [];
         if(resJson.items){
           var searhRes = JSON.parse(data.toString()).items;
-          console.log(searhRes);
+          //console.log(searhRes);
           for(var j = 0; j<searhRes.length;j++){
             res[j] = {
               url:searhRes[j].link,
@@ -73,8 +73,8 @@ app.get('/imgsearch/:qString',function(req,res){
   if((typeof num == 'number')){
     var qstr = req.params.qString;
     insertQ(qstr);
-    var url = urlPre+qstr+'&cx='+cx+'&num='+num+'&searchType=image&key='+key;
-    // console.log("url : "+url);
+    var url = urlPre+qstr+'&cx='+cx+'&start='+num+'&searchType=image&key='+key;
+    console.log("url : "+url);
     function cbAppRes(rJson){
       res.jsonp(rJson);
     }
