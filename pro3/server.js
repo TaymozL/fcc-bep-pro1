@@ -1,10 +1,15 @@
 var mg = require("mongodb").MongoClient;
 var validUrl = require("valid-url");
 var crypto = require("crypto");
+
+require('dotenv').load();
+
+var appUrl = "https://fcc-bep1-taymozl-1.c9users.io/pro3";
+var mongoUrl = process.env.DBURL;
 function dbInsertNewUrl(url,cb){
     var res;
 
-    mg.connect('mongodb://localhost:27017/fcc-bep3',function(er,db){
+    mg.connect(mongoUrl,function(er,db){
         if(er){
             throw er;
         }
@@ -58,7 +63,7 @@ function dbInsertNewUrl(url,cb){
     // return res;
 }
 function dbFind(q,cb){
-    mg.connect('mongodb://localhost:27017/fcc-bep3',function(er,db){
+    mg.connect(mongoUrl,function(er,db){
         if(er){
             throw er;
         }
@@ -75,13 +80,13 @@ function dbFind(q,cb){
     });
 }
 var ep = require('express');
-var app = ep();
+var app = ep.Router();
 
 app.get('/new/*',function (req,res){
     var urlQ = req.path.slice(5);
     if(validUrl.isUri(urlQ)){
         dbInsertNewUrl(urlQ,function(shortUrl){
-            var appUrl = "https://fcc-bep1-taymozl-1.c9users.io/";
+            
             res.jsonp({
                 origin_url:urlQ,
                 short_url:appUrl+shortUrl
@@ -106,6 +111,6 @@ app.get('/*',function(req, res) {
         res.end('Invalid Short URL');
     }
 });
-app.listen(8080);
-
+// app.listen(8080);
+module.exports=app;
 // process.exit();

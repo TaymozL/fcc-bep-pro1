@@ -1,13 +1,27 @@
 {
-  "name": "workspace",
+  "name": "fcc-bep",
   "version": "1.0.0",
-  "description": "",
+  "description": "fcc basic backend pros",
   "main": "index.js",
   "dependencies": {
-    "express": "^3.2.6",
     "async": "^0.2.10",
+    "bl": "^1.1.2",
+    "body-parser": "^1.15.1",
+    "crypto": "0.0.3",
+    "dotenv": "^2.0.0",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "https": "^1.0.0",
+    "method-override": "^2.3.5",
+    "mongodb": "^2.1.18",
+    "morgan": "^1.7.0",
+    "multer": "^1.1.0",
+    "pug": "^2.0.0-alpha7",
+    "serve-favicon": "^2.3.0",
     "socket.io": "^0.9.17",
-    "urlencode": "^1.1.0"
+    "urlencode": "^1.1.0",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {},
   "scripts": {

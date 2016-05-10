@@ -1,5 +1,5 @@
 var exp = require("express");
-var app = exp();
+var app = exp.Router();
 app.get('/api/whoami',function(req,res){
     var userAgent = req.headers['user-agent']
     var swIndex = [userAgent.match(/\(/).index,userAgent.match(/\)/).index];
@@ -16,4 +16,5 @@ app.get('/api/whoami',function(req,res){
     res.jsonp(resJSON);
 })
 
-app.listen(8080);
+// app.listen(8080);
+module.exports=app;

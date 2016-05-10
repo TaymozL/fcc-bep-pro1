@@ -1,9 +1,9 @@
 var ep = require("express");
-var app = ep();
+var app = ep.Router();
 var multer  = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, process.cwd()+'/uploads')
+    cb(null, process.cwd()+'/pro5/uploads')
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname)
@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 // var upload = multer({dest: process.cwd()+'/uploads'});
 console.log('cwd : '+process.cwd());
-app.use('/file',ep.static('/home/ubuntu/workspace/pro5/client'));
+app.use('/file',ep.static(process.cwd()+'/pro5/client'));
 
 app.post('/file/upload',upload.single('0'),function(req,res){
     // console.log(req.file.size);
@@ -28,8 +28,9 @@ app.post('/file/upload',upload.single('0'),function(req,res){
     //     return ;
     // });
     console.log(req.rawHeaders)
-    console.log(req.file)
-    console.log(typeof req.file)
+    // console.log(req.file)
+    // console.log(typeof req.file)
     res.json({fileSize:req.file.size});
 });
-app.listen(8080);
+// app.listen(8080);
+module.exports=app;

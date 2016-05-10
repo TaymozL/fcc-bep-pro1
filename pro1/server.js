@@ -1,5 +1,5 @@
-var exp = require("express");
-var app = exp();
+var ep = require("express");
+var app = ep.Router();
 var url = require('urlencode');
 app.get('/*',function(req,res){
     var resJSON = {
@@ -23,5 +23,5 @@ app.get('/*',function(req,res){
     }
     res.json(resJSON);
 })
-
-app.listen(8080);
+module.exports = app;
+// app.listen(8080);

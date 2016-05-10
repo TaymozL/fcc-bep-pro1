@@ -8,7 +8,7 @@ var bl = require("bl");
 var https = require("https");
 var ep = require("express");
 var mg = require("mongodb").MongoClient;
-var dburl = 'mongodb://localhost:27017/fcc-bep3';
+var dburl = process.env.DBURL;
 function insertQ(q){
   mg.connect(dburl,function(er,db){
     if (er) throw er;
@@ -34,7 +34,7 @@ function findQs(cb){
 function reqImageFromGoogle(url,cb){
   https.get(url,(res) => {
     console.log('statusCode: ', res.statusCode);
-    console.log('headers: ', res.headers);
+    // console.log('headers: ', res.headers);
     res.pipe(bl(function(er,data){
         if (er) throw er;
         var resJson = JSON.parse(data.toString());
@@ -60,8 +60,38 @@ function reqImageFromGoogle(url,cb){
     console.error(e);
   });
 }
+function reqTextFromGoogle(url,cb){
+  https.get(url,(res) => {
+    console.log('statusCode: ', res.statusCode);
+    // console.log('headers: ', res.headers);
+    res.pipe(bl(function(er,data){
+        if (er) throw er;
+        var resJson = JSON.parse(data.toString());
+        var res = [];
+        if(resJson.items){
+          var searhRes = JSON.parse(data.toString()).items;
+          // console.log(searhRes);
+          for(var j = 0; j<searhRes.length;j++){
+            res[j] = {
+              url:searhRes[j].link,
+              
+              title:searhRes[j].title,
+              snippet:searhRes[j].snippet
+              // context:searhRes[j].image.contextLink,
+              // thumbnail : searhRes[j].image.thumbnailLink
+            }
+          }
+        }else if(resJson.spelling){
+          res = {correctedQ : resJson.spelling.correctedQuery};
+        }
 
-var app = ep();
+        cb(res);
+    }));
+  }).on('error', (e) => {
+    console.error(e);
+  });
+}
+var app = ep.Router();
 app.get('/imgsearch/latest',function(req,res){
     function cbLatestRes(rJson){
       res.jsonp(rJson);
@@ -69,7 +99,7 @@ app.get('/imgsearch/latest',function(req,res){
     findQs(cbLatestRes);
 });
 app.get('/imgsearch/:qString',function(req,res){
-  var num = +(req.query.offset);
+  var num = +(req.query.offset)||1;
   if((typeof num == 'number')){
     var qstr = req.params.qString;
     insertQ(qstr);
@@ -84,4 +114,22 @@ app.get('/imgsearch/:qString',function(req,res){
   }
 
 });
-app.listen(8080);
+
+app.get('/textsearch/:qString',function(req,res){
+  var num = +(req.query.offset)||1;
+  if((typeof num == 'number')){
+    var qstr = req.params.qString;
+    insertQ(qstr);
+    var url = urlPre+qstr+'&cx='+cx+'&start='+num+'&key='+key;
+    console.log("url : "+url);
+    function cbAppRes(rJson){
+      res.jsonp(rJson);
+    }
+    reqTextFromGoogle(url,cbAppRes);
+  }else{
+    res.end('wrong params');
+  }
+
+});
+// app.listen(8080);
+module.exports=app;
