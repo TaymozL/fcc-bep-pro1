@@ -6,4 +6,7 @@ for(var i=1; i<6; i++){
     BEapp.use("/pro"+i,routers[i]);
 }
 // BEapp.use("/pro1",require("./testrouter.js"));
-BEapp.listen(8080);
+// BEapp.listen(8080);
+BEapp.listen(BEapp.get('port'), function() {
+  console.log('Node app is running on port', BEapp.get('port'));
+});
