@@ -1,5 +1,5 @@
 
-require('dotenv').load();
+// require('dotenv').load();
 var cx=process.env.CX;
 var key = process.env.KEY;
 console.log(key+cx);

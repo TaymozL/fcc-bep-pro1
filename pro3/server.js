@@ -2,7 +2,7 @@ var mg = require("mongodb").MongoClient;
 var validUrl = require("valid-url");
 var crypto = require("crypto");
 
-require('dotenv').load();
+// require('dotenv').load();
 
 var appUrl = "https://fcc-bep1-taymozl-1.c9users.io/pro3";
 var mongoUrl = process.env.MONGODB_URI;
