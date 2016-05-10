@@ -8,7 +8,7 @@ var bl = require("bl");
 var https = require("https");
 var ep = require("express");
 var mg = require("mongodb").MongoClient;
-var dburl = process.env.DBURL;
+var dburl = process.env.MONGODB_URI;
 function insertQ(q){
   mg.connect(dburl,function(er,db){
     if (er) throw er;
