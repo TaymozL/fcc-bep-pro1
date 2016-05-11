@@ -4,7 +4,7 @@ var crypto = require("crypto");
 
 // require('dotenv').load();
 
-var appUrl = "https://fcc-bep1-taymozl-1.c9users.io/pro3";
+var appUrl = process.env.appUrl;
 var mongoUrl = process.env.MONGODB_URI;
 function dbInsertNewUrl(url,cb){
     var res;
@@ -89,7 +89,7 @@ app.get('/new/*',function (req,res){
             
             res.jsonp({
                 origin_url:urlQ,
-                short_url:appUrl+shortUrl
+                short_url:appUrl+'/pro3/'+shortUrl
             })
         })
     }else{
