@@ -1,6 +1,6 @@
 var exp = require("express");
 var app = exp.Router();
-app.get('/api/whoami',function(req,res){
+app.get('/whoami',function(req,res){
     var userAgent = req.headers['user-agent']
     var swIndex = [userAgent.match(/\(/).index,userAgent.match(/\)/).index];
     var sw = userAgent.slice(swIndex[0]+1,swIndex[1]);
