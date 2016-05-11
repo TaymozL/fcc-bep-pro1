@@ -1,6 +1,7 @@
 var ep = require("express");
 var BEapp = ep();
 var routers = [];
+BEapp.set('port', (process.env.PORT || 5000));
 for(var i=1; i<6; i++){
     routers[i] = require("./pro"+i+"/server.js");
     BEapp.use("/pro"+i,routers[i]);
